@@ -18,7 +18,7 @@ socketio.on('connection', function (socket) {
 	socket.join(roomName);
 	socket.emit('id', id);
 	
-
+	console.log("client connected: "+id);
 	socket.on('message', function (message) {
 
 	var clients = findClientsSocket(roomName);
