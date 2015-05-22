@@ -26,7 +26,7 @@ socketio.on('connection', function (socket) {
 
 	socket.on('message', function (message) {
 
-	console.log("message from client: "+ JSON.stringify(message);
+	console.log("message from client: "+ JSON.stringify(message));
 
 	var clients = findClientsSocket(roomName);
 
