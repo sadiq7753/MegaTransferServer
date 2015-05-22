@@ -19,9 +19,17 @@ socketio.on('connection', function (socket) {
 	socket.emit('id', id);
 	
 	console.log("client connected: "+id);
+	
+	socket.on('foo', function(message){
+		console.log(message);
+	});
+
 	socket.on('message', function (message) {
 
+	console.log("message from client: "+ message);
+
 	var clients = findClientsSocket(roomName);
+
 
 	var socketid = '';
 
