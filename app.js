@@ -14,25 +14,22 @@ socketio.on('connection', function (socket) {
 
 	var id = (Math.random().toString(10) + '0000000000000000000').substr(2, 4);
 
-	socket.set("username", id);
+	socket.username = id;
 	socket.join(roomName);
 	socket.emit('id', id);
 	
 
 	socket.on('message', function (message) {
 
-		var clients = socketio.sockets.clients(message.room);
+	var clients = findClientsSocket(roomName);
 
-		var socketid = '';
+	var socketid = '';
 
-		var i = 0;
-		clients.forEach(function(client) {
-			client.get('username', function(err, nickname) {
-				if(nickname == message.to)
-					socketid = client.id;
-				i++;
-			})
-		});
+      for(var i in clients){
+        if(clients[i].username == message.to){
+          socketid = clients[i].id;
+        }
+      }
 
 
       var msgToSend = message.msg;
@@ -44,5 +41,24 @@ socketio.on('connection', function (socket) {
 
 	});
 
+function findClientsSocket(roomId, namespace) {
+    var res = []
+      , ns = socketio.of(namespace ||"/");    // the default namespace is "/"
+
+    if (ns) {
+      for (var id in ns.connected) {
+        if(roomId) {
+          var index = ns.connected[id].rooms.indexOf(roomId) ;
+          if(index !== -1) {
+            res.push(ns.connected[id]);
+          }
+        } else {
+          res.push(ns.connected[id]);
+        }
+      }
+    }
+
+    return res;
+  }	
 		
 });
