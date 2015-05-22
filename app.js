@@ -45,7 +45,7 @@ socketio.on('connection', function (socket) {
       if(typeof msgToSend != 'object')
         msgToSend = JSON.parse(msgToSend);
 
-		socketio.sockets.socket(socketid).emit('message', msgToSend);
+    socketio.to(socketid).emit('message', msgToSend);
 
 	});
 
